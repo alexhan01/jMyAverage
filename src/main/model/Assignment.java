@@ -31,14 +31,14 @@ public class Assignment {
         return weight;
     }
 
-    // REQUIRES: name cannot be and empty string;
-    //           grade cannot be negative;
-    //           weight cannot be negative;
-    // MODIFIES: this
-    // EFFECTS creates a new assignment with the given name, grade, and weight
-    public Assignment createAssignment(String name, double grade, double weight) {
-        return new Assignment(name, grade, weight);
-    }
+//    // REQUIRES: name cannot be and empty string;
+//    //           grade cannot be negative;
+//    //           weight cannot be negative;
+//    // MODIFIES: this
+//    // EFFECTS creates a new assignment with the given name, grade, and weight
+//    public Assignment createAssignment(String name, double grade, double weight) {
+//        return new Assignment(name, grade, weight);
+//    }
 
     /*
     // Note: for future ver.
