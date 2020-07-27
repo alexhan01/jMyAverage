@@ -29,8 +29,11 @@ be able to more effectively allocate our time for coursework.
 
 ## User Stories
 
+Implemented for Phase 1:
 - As a user, I want to be able to add new assignments to the assignment list
 - As a user, I want to be able to view the list of assignments on my assignment list
 - As a user, I want to be able to delete an assignment on my assignment list
 - As a user, I want to be able to see the calculated average of the course based on the assignments given
+
+For future:
 - As a user, I want to be able to assign tags to each assignment (e.g. Quiz, Exam, Project, Lecture Lab)
