@@ -21,7 +21,7 @@ public class CourseGradeCalculatorApp {
     }
 
     // MODIFIES: this
-    // EFFECTS:
+    // EFFECTS: processes user input to run the application
     private void runCourseGradeCalculator() {
         boolean keepRunning = true;
         String command = null;
@@ -44,6 +44,8 @@ public class CourseGradeCalculatorApp {
         System.out.println("\nThe End!");
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes user command to select target course
     private Course selectCourse() {
         String selection = "";
 
@@ -119,7 +121,16 @@ public class CourseGradeCalculatorApp {
     // EFFECTS: delete an assignment of a selected course
     private void doDeleteAssignment() {
         Course selected = selectCourse();
-        System.out.println();
+        System.out.println(
+                "Here are all the assignments for the course: "
+                        + selected.getCourseName()
+        );
+        selected.printAssignments();
+        System.out.println("Please input which assignment you would like to delete");
+        int index = Integer.parseInt(input.next()) - 1;
+        Assignment assignmentToDelete = selected.getAssignmentByIndex(index);
+        selected.deleteAssignment(assignmentToDelete);
+        System.out.println("Assignment deleted successfully!");
     }
 
     // MODIFIES: nothing
@@ -138,7 +149,7 @@ public class CourseGradeCalculatorApp {
     private void doViewCourseGradeAverage() {
         Course selected = selectCourse();
         System.out.println(
-                "Here is the course grade average for the course"
+                "Here is the course grade average for the course: "
                 + selected.getCourseName()
         );
         double courseGradeAverage = selected.getAverage();

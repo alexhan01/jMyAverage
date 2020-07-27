@@ -1,12 +1,11 @@
 package model;
 
 import persistence.Saveable;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
+import java.io.*;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
-// Represents an course with course id, course name, and list of assignments
+// Represents a course with course id, course name, and list of assignments
 public class Course {
     private String courseName;                  // the course name
     private ArrayList<Assignment> assignments;  // the list of assignments under the course
@@ -39,30 +38,8 @@ public class Course {
             System.out.println("Assignment doesn't exist!");
         } else {
             assignments.remove(assignment);
-            System.out.println("Assignment deleted");
-
         }
     }
-
-//    // MODIFIES: nothing
-//    // EFFECTS: orderly print out all assignments in the assignmentList
-//    public ArrayList<String> printAssignment() {
-//        int i = 0;
-//        ArrayList<String> printedAssignments = null;
-//        for (Assignment assignment : assignments) {
-//            printedAssignments.add(
-//                    "Assignment #"
-//                    + ++i
-//                    + " is "
-//                    + assignment.getName()
-//                    + " with a grade of "
-//                    + String.valueOf(assignment.getGrade())
-//                    + " and weight "
-//                    + String.valueOf(assignment.getWeight())
-//                    + ".");
-//        }
-//        return printedAssignments;
-//    }
 
     // MODIFIES: nothing
     // EFFECTS: orderly print out all assignments in the list of assignments
@@ -91,6 +68,7 @@ public class Course {
     // REQUIRES: i < assignmentList.length()
     // MODIFIES: nothing
     // EFFECTS: return the assignment corresponding to the given index
+    // NOTE: will add exception handling later
     public Assignment getAssignmentByIndex(int i) {
         return assignments.get(i);
         /*
@@ -134,7 +112,7 @@ public class Course {
         return 0;
     }
 
-    //TODO: Will add persistence later
+    //NOTE: will add persistence later
 //    @Override
 //    public void save(PrintWriter printWriter) {
 //

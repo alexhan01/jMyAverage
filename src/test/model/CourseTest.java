@@ -83,20 +83,6 @@ public class CourseTest {
         assertEquals(1, testAssignments.size());
     }
 
-//    @Test
-//    void printAssignmentTest() {
-//        ArrayList<String> list1 = null;
-//        list1.add("Assignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.");
-//        ArrayList<String> list2 = null;
-//        list2.add("Assignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.");
-//        list2.add("Assignment #2 is Sample 2 with a grade of 50.0 and weight 30.0.");
-//
-//        testCourse.addAssignment(testAssignment1);
-//        assertEquals(list1, testCourse.printAssignment());
-//        testCourse.addAssignment(testAssignment2);
-//        assertEquals(list2, testCourse.printAssignment());
-//    }
-
     @Test
     void getAssignmentByIndexTest() {
         testCourse.addAssignment(testAssignment1);
