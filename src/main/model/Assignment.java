@@ -8,9 +8,9 @@ public class Assignment {
 
     // EFFECTS: constructs an assignment
     public Assignment(String name, double grade, double weight) {
-        this.name = "";
-        this.grade = 0;
-        this.weight = 0;
+        this.name = "Sample";
+        this.grade = 100;
+        this.weight = 100;
     }
 
     // Getter for name
@@ -36,10 +36,6 @@ public class Assignment {
 
     public Assignment createAssignment(String name, double grade, double weight) {
         return new Assignment(name, grade, weight);
-    }
-
-    public void deleteAssignment() {
-
     }
 
     /*
