@@ -1,6 +1,5 @@
 package model;
 
-import persistence.Saveable;
 import java.io.*;
 import java.util.*;
 
@@ -43,20 +42,27 @@ public class Course {
 
     // MODIFIES: nothing
     // EFFECTS: orderly print out all assignments in the list of assignments
-    public void printAssignments() {
+    public String printAssignments() {
         int i = 0;
+        String printedAssignment = "";
         for (Assignment assignment : assignments) {
-            System.out.println(
-                    "Assignment #"
-                    + ++i
-                    + " is "
-                    + assignment.getName()
-                    + " with a grade of "
-                    + String.valueOf(assignment.getGrade())
-                    + " and weight "
-                    + String.valueOf(assignment.getWeight())
-                    + ".");
+            printedAssignment += printedAssignmentStructure(assignment, i);
+            i++;
         }
+        return printedAssignment;
+    }
+
+    // MODIFIES: nothing
+    // EFFECTS: this helper function returns printedAssignment string structure
+    public String printedAssignmentStructure(Assignment assignment, int i) {
+        return  "\nAssignment #"
+                + ++i + " is "
+                + assignment.getName()
+                + " with a grade of "
+                + String.valueOf(assignment.getGrade())
+                + " and weight "
+                + String.valueOf(assignment.getWeight())
+                + ".";
     }
 
     // MODIFIES: nothing
@@ -103,13 +109,10 @@ public class Course {
     // EFFECTS: calculate course average from list of assignments
     private double calculateAverage() {
         average = 0;
-        if (assignments != null) {
-            for (Assignment assignment : assignments) {
-                average += (assignment.getGrade() * (assignment.getWeight() / 100));
-            }
-            return average;
+        for (Assignment assignment : assignments) {
+            average += (assignment.getGrade() * (assignment.getWeight() / 100));
         }
-        return 0;
+        return average;
     }
 
     //NOTE: will add persistence later

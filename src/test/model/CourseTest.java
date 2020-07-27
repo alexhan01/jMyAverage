@@ -90,4 +90,18 @@ public class CourseTest {
         assertEquals(testAssignment1, testCourse.getAssignmentByIndex(0));
         assertEquals(testAssignment2, testCourse.getAssignmentByIndex(1));
     }
+
+    @Test
+    void printAssignmentsTest() {
+        assertEquals("", testCourse.printAssignments());
+        testCourse.addAssignment(testAssignment1);
+        assertEquals(
+                "\nAssignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.",
+                testCourse.printAssignments());
+        testCourse.addAssignment(testAssignment2);
+        assertEquals(
+                "\nAssignment #1 is Sample 1 with a grade of 100.0 and weight 70.0." +
+                        "\nAssignment #2 is Sample 2 with a grade of 50.0 and weight 30.0.",
+                testCourse.printAssignments());
+    }
 }

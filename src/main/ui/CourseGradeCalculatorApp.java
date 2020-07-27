@@ -125,7 +125,7 @@ public class CourseGradeCalculatorApp {
                 "Here are all the assignments for the course: "
                         + selected.getCourseName()
         );
-        selected.printAssignments();
+        System.out.println(selected.printAssignments());
         System.out.println("Please input which assignment you would like to delete");
         int index = Integer.parseInt(input.next()) - 1;
         Assignment assignmentToDelete = selected.getAssignmentByIndex(index);
@@ -141,7 +141,7 @@ public class CourseGradeCalculatorApp {
                 "Here are all the assignments for the course: "
                 + selected.getCourseName()
         );
-        selected.printAssignments();
+        System.out.println(selected.printAssignments());
     }
 
     // MODIFIES: nothing
