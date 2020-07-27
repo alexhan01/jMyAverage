@@ -8,9 +8,9 @@ import java.util.*;
 public class AssignmentList implements Saveable {
     private ArrayList<Assignment> assignmentList;
 
-    // EFFECTS: constructs an assignment list
+    // EFFECTS: constructs an empty assignment list
     public AssignmentList() {
-        ArrayList<Assignment> assignmentList = new ArrayList<>();
+        assignmentList = new ArrayList<>();
     }
 
     // MODIFIES: this
@@ -39,8 +39,18 @@ public class AssignmentList implements Saveable {
     // MODIFIES: nothing
     // EFFECTS: orderly print out all assignments in the assignmentList
     public void printAssignment() {
+        int i = 0;
         for (Assignment assignment : assignmentList) {
-            System.out.println("");
+            System.out.println(
+                    "Assignment #"
+                    + ++i
+                    + " is "
+                    + assignment.getName()
+                    + " with a grade of "
+                    + String.valueOf(assignment.getGrade())
+                    + " and weight "
+                    + String.valueOf(assignment.getWeight())
+                    + ".");
         }
     }
 
@@ -56,10 +66,19 @@ public class AssignmentList implements Saveable {
         return assignmentList.size();
     }
 
+    // REQUIRES: i < assignmentList.length()
     // MODIFIES: nothing
     // EFFECTS: return the assignment corresponding to the given index
     public Assignment getAssignmentByIndex(int i) {
         return assignmentList.get(i);
+        /*
+        if (i < length()) {
+            return assignmentList.get(i);
+        } else {
+            System.out.println("No assignment at the index");
+            throw someException;
+        }
+         */
     }
 
     @Override
