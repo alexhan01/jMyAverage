@@ -2,13 +2,15 @@ package ui;
 
 import model.Assignment;
 import model.Course;
+
 import java.io.*;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
-//    private static final COURSES_FILE = "./data/courses.txt";
+    private static final String COURSES_FILE = "./data/";
+    private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
     private Course cpsc221;
     private ArrayList<Assignment> cpsc210Assignments = new ArrayList<>();
@@ -36,12 +38,13 @@ public class CourseGradeCalculatorApp {
 
             if (command.equals("q")) {
                 keepRunning = false;
+                // method that auto saves here
             } else {
                 processCommand(command);
             }
         }
 
-        System.out.println("\nThe End!");
+        System.out.println("\nThanks for using the Course Grade Calculator.");
     }
 
     // MODIFIES: this
@@ -63,9 +66,17 @@ public class CourseGradeCalculatorApp {
     }
 
     // MODIFIES: this
-    // EFFECTS loads pre-built courses cpsc210 and cpsc221
-    // NOTE: once added persistence, change
+    // EFFECTS: loads courses from COURSES_FILE, if that file exists;
+    //          otherwise initialize accounts with default values
+    //TODO: EDIT
     private void loadCourses() {
+//        try {
+//            // List<Course> courses = Reader.readAccounts(new JSON OBJECT COURSES_FILE))
+//            // write a for loop that takes the name of each entry (e.g. cpsc210, cpsc213)
+//            and assign them as new Course object
+//        } catch (IOException e) {
+//            init();
+//        }
         init();
     }
 
@@ -74,6 +85,19 @@ public class CourseGradeCalculatorApp {
     private void init() {
         cpsc210 = new Course("CPSC 210", cpsc210Assignments);
         cpsc221 = new Course("CPSC 221", cpsc221Assignments);
+        courses.add(cpsc210);
+        courses.add(cpsc221);
+    }
+
+    // EFFECTS: saves state of courses to COURSES_FILE
+    // TODO: EDIT
+    private void saveCourse(Course course) {
+        String filePath = COURSES_FILE + course.getCourseName() + ".json";
+        try {
+            course.save(filePath, course);
+        } catch (IOException e) {
+            System.out.println("Unable to save courses");
+        }
     }
 
     // MODIFIES: this
@@ -81,6 +105,11 @@ public class CourseGradeCalculatorApp {
     private void processCommand(String command) {
         if (command.equals("a")) {
             doAddAssignment();
+        } else if (command.equals("s")) {
+            for (Course course : courses) {
+                saveCourse(course);
+            }
+            System.out.println("Courses saved to file");
         } else if (command.equals("d")) {
             doDeleteAssignment();
         } else if (command.equals("v")) {
@@ -99,6 +128,7 @@ public class CourseGradeCalculatorApp {
         System.out.println("\td -> delete assignment");
         System.out.println("\tv -> view assignments");
         System.out.println("\tg -> view course grade average");
+        System.out.println("\ts -> save assignments");
         System.out.println("\tq -> quit");
     }
 

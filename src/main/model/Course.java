@@ -1,6 +1,9 @@
 package model;
 
+import com.google.gson.*;
+import persistence.*;
 import java.io.*;
+import java.io.Writer;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
@@ -14,7 +17,6 @@ public class Course {
     // EFFECTS: name of course set to courseName;
     //          assignments is the list of assignments under the course.
     public Course(String courseName, ArrayList<Assignment> assignments) {
-//        id = nextCourseId++;
         this.courseName = courseName;
         this.assignments = assignments;
     }
@@ -42,20 +44,27 @@ public class Course {
 
     // MODIFIES: nothing
     // EFFECTS: orderly print out all assignments in the list of assignments
-    public String printAssignments() {
+    public ArrayList<String> printAssignments() {
+//        int i = 0;
+//        String printedAssignment = "";
+//        for (Assignment assignment : assignments) {
+//            printedAssignment += printedAssignmentStructure(assignment, i);
+//            i++;
+//        }
+//        return printedAssignment;
         int i = 0;
-        String printedAssignment = "";
+        ArrayList<String> printedAssignments = new ArrayList<>();
         for (Assignment assignment : assignments) {
-            printedAssignment += printedAssignmentStructure(assignment, i);
+            printedAssignments.add(printedAssignmentStructure(assignment, i));
             i++;
         }
-        return printedAssignment;
+        return printedAssignments;
     }
 
     // MODIFIES: nothing
     // EFFECTS: this helper function returns printedAssignment string structure
     public String printedAssignmentStructure(Assignment assignment, int i) {
-        return  "\nAssignment #"
+        return  "Assignment #"
                 + ++i + " is "
                 + assignment.getName()
                 + " with a grade of "
@@ -115,9 +124,34 @@ public class Course {
         return average;
     }
 
-    //NOTE: will add persistence later
+    //TODO: edit comments
 //    @Override
-//    public void save(PrintWriter printWriter) {
-//
+    public void save(String filePath, Course course) throws IOException {
+        updateCourseInfo(course);
+        new File(filePath);
+        try (Writer writer = new FileWriter(filePath)) {
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .create();
+            gson.toJson(course, writer);
+        }
+    }
+
+    // Fixed issue where average doesn't get updated if getAverage or calculateAverage isn't called
+    private void updateCourseInfo(Course course) {
+        course.calculateAverage();
+    }
+
+//    //TODO: edit comments
+//    public List<Course> load(String filePath, Course course) throws FileNotFoundException {
+//        Gson gson = new GsonBuilder()
+//                .setPrettyPrinting()
+//                .create();
+//        try (Reader reader = new FileReader(filePath)) {
+//            // Convert JSON file to Java Object
+//            Course c = gson.fromJson(reader, Course.class);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //    }
 }
