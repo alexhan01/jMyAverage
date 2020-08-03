@@ -30,11 +30,4 @@ public class Assignment {
     public double getWeight() {
         return weight;
     }
-
-    /*
-    // Note: for future ver.
-    public void editAssignment() {
-    }
-     */
-
 }

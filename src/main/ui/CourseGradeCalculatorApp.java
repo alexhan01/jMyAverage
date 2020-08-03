@@ -44,7 +44,6 @@ public class CourseGradeCalculatorApp {
 
             if (command.equals("q")) {
                 keepRunning = false;
-                // TODO: method that auto saves here
             } else {
                 processCommand(command);
             }
@@ -53,7 +52,7 @@ public class CourseGradeCalculatorApp {
         System.out.println("\nThanks for using the Course Grade Calculator.");
     }
 
-    // TODO: test
+    // EFFECTS: Creates a formatted list of possible inputs for course selection
     private ArrayList<String> possibleInputForCourseSelection() {
         ArrayList<String> possibleInputs = new ArrayList<>();
         for (int i = 0; i < courses.size(); i++) {
@@ -63,8 +62,7 @@ public class CourseGradeCalculatorApp {
         return possibleInputs;
     }
 
-    // TODO: test
-    // Combine the above possible inputs with the actual course names from list of courses.
+    // EFFECTS: Conducts the formatting of inputs for course selection
     private ArrayList<String> printPossibleCourses() {
         ArrayList<String> printedPossibleCourses = new ArrayList<>();
         int i = 1;
@@ -81,14 +79,13 @@ public class CourseGradeCalculatorApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command to select target course
-    // TODO: completely redesign this function so it spits out based on the number of courses in the loaded file.
     private Course selectCourse() {
         String selection = "";
 
-        // Returns list of possible inputs.
+        // Returns a list of possible inputs.
         ArrayList<String> possibleInputs = possibleInputForCourseSelection();
 
-        // Spit out all the courses available
+        // Allows users to view all possible course selection
         while (!(possibleInputs.contains(selection))) {
             for (int i = 0; i < printPossibleCourses().size(); i++) {
                 System.out.println(printPossibleCourses().get(i));
@@ -96,19 +93,19 @@ public class CourseGradeCalculatorApp {
             selection = input.next();
         }
 
-        // selection parsing
+        // Returns course based on user input
         if (possibleInputs.contains(selection)) {
             int pos = Integer.parseInt(selection);
             int newPos = pos - 1;
             return courses.get(newPos);
         } else {
-            return cpsc221; //TODO: change so default isn't cpsc221 but test
+            System.out.println("Such course doesn't exist - loading CPSC210 as default option.");
+            return cpsc210;
         }
     }
 
-    // TODO: the clauses
+    // EFFECTS: Creates a list of file paths to the to-be-loaded .json files.
     private ArrayList<String> extractFilePaths() {
-        // 1. Extract all necessary file paths
         File f = new File(COURSES_FOLDER);
         FilenameFilter jsonFilter = new FilenameFilter() {
             @Override
@@ -131,18 +128,15 @@ public class CourseGradeCalculatorApp {
         return filePaths;
     }
 
-    // TODO: REQUIRES...clauses
-    // EFFECTS: it sets the courses with the attributes from the .json files in data folder
-    // TODO: edit
+    // EFFECTS: loads the courses from the data folder
     private void loadCourses() {
-        CourseReader courseReader = new CourseReader("");
+        CourseReader courseReader = new CourseReader();
         ArrayList<String> filePaths = extractFilePaths();
 
-        // 2. send those stream those filepaths to the coursereader
         try {
             if (!(filePaths.size() == 0)) {
                 for (String filePath : filePaths) {
-                    Course newCourse = courseReader.load(filePath); //TODO: change newCourse name
+                    Course newCourse = courseReader.load(filePath);
                     courses.add(newCourse);
                 }
             } else {
@@ -162,13 +156,12 @@ public class CourseGradeCalculatorApp {
         courses.add(cpsc221);
     }
 
+    // EFFECTS: saves courses to the data folder
     private void saveCourse(Course course) {
         String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
-        CourseWriter writer = new CourseWriter(filePath, course);
+        CourseWriter courseWriter = new CourseWriter();
         try {
-            writer.write(filePath, course);
-        } catch (FileNotFoundException e) { //TODO: Do I need this exception for writer?
-            System.out.println("Unable to save courses.");
+            courseWriter.write(filePath, course);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unable to save courses.");
@@ -237,7 +230,8 @@ public class CourseGradeCalculatorApp {
         System.out.println("Assignment added successfully!");
     }
 
-    // TODO: clauses
+    // MODIFIES: this
+    // EFFECTS: deletes selected course
     private void doDeleteCourse() {
         System.out.println("Please select which course you would like to delete: ");
         Course selected = selectCourse();
@@ -246,12 +240,12 @@ public class CourseGradeCalculatorApp {
         System.out.println("Course successfully deleted!");
     }
 
-    // TODO: clauses
+    // EFFECTS: removes associated .json file for the selected course
     private void removeCourseFile(Course course) {
         String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
         File f = new File(filePath);
         if (f.delete()) {
-            System.out.println(course.getCourseName() + "file successfully removed.");
+            System.out.println(course.getCourseName() + " file successfully removed.");
         } else {
             System.out.println("Unable to delete that file");
         }

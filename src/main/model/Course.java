@@ -1,17 +1,13 @@
 package model;
 
-import com.google.gson.*;
-import java.io.*;
-import java.io.Writer;
-import java.lang.reflect.Type;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
 // Represents a course with course id, course name, and list of assignments
 public class Course {
-    private String courseName;                  // the course name
-    private ArrayList<Assignment> assignments;  // the list of assignments under the course
-    private double average;                     // course average calculated from assignments
+    private String courseName;
+    private ArrayList<Assignment> assignments;
+    private double average;
 
     // REQUIRES: courseName has a non-zero length
     // EFFECTS: name of course set to courseName;
@@ -45,13 +41,6 @@ public class Course {
     // MODIFIES: nothing
     // EFFECTS: orderly print out all assignments in the list of assignments
     public ArrayList<String> printAssignments() {
-//        int i = 0;
-//        String printedAssignment = "";
-//        for (Assignment assignment : assignments) {
-//            printedAssignment += printedAssignmentStructure(assignment, i);
-//            i++;
-//        }
-//        return printedAssignment;
         int i = 0;
         ArrayList<String> printedAssignments = new ArrayList<>();
         for (Assignment assignment : assignments) {
@@ -86,14 +75,6 @@ public class Course {
     // NOTE: will add exception handling later
     public Assignment getAssignmentByIndex(int i) {
         return assignments.get(i);
-        /*
-        if (i < length()) {
-            return assignmentList.get(i);
-        } else {
-            System.out.println("No assignment at the index");
-            throw someException;
-        }
-         */
     }
 
     // MODIFIES: nothing
@@ -124,7 +105,8 @@ public class Course {
         return average;
     }
 
-    // Fixed issue where average doesn't get updated if getAverage or calculateAverage isn't called
+    // MODIFIES: this
+    // EFFECTS: Updates all course info
     public void updateCourseInfo() {
         calculateAverage();
     }

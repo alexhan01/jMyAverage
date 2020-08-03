@@ -5,23 +5,13 @@ import com.google.gson.GsonBuilder;
 import model.Course;
 import java.io.*;
 
+// A writer that can write course data to a file
 public class CourseWriter {
-    private String filePath;
-    private Course course;
 
-    // constructs writer
-    // TODO: add REQUIRES/MODIFIES/EFFECTS clauses
-    // TODO: Write tests for this method
-    public CourseWriter(String filePath, Course course) {
-        this.filePath = filePath;
-        this.course = course;
-    }
-
-    // TODO: add REQUIRES/MODIFIES/EFFECTS clauses
-    // TODO: Write tests for this method
+    // EFFECTS: writes course to a file
     public void write(String filePath, Course course) throws IOException {
-        course.updateCourseInfo(); // Extract this method so it runs outside the writer.
-        new File(filePath); // Keep
+        course.updateCourseInfo();
+        new File(filePath);
         try (Writer writer = new FileWriter(filePath)) {
             Gson gson = new GsonBuilder()
                     .setPrettyPrinting()
