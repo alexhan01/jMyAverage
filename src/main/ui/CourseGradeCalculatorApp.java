@@ -104,20 +104,6 @@ public class CourseGradeCalculatorApp {
         } else {
             return cpsc221; //TODO: change so default isn't cpsc221 but test
         }
-//        if (selection.equals(some element i in the array of possible inputs))
-//            return ith element in the courses list.
-
-//        while (!(selection.equals("1") || selection.equals("2"))) {
-//            System.out.println("1 for CPSC 210");
-//            System.out.println("2 for CPSC 221");
-//            selection = input.next();
-//        }
-//
-//        if (selection.equals("1")) {
-//            return cpsc210;
-//        } else {
-//            return cpsc221;
-//        }
     }
 
     // TODO: the clauses
@@ -168,22 +154,6 @@ public class CourseGradeCalculatorApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads courses from COURSES_FILE, if that file exists;
-    //          otherwise initialize accounts with default values
-//    //TODO: REMOVE
-//    private void loadCourse() {
-//        init();
-////        try {
-////            course.load(filePath);
-////        } catch (FileNotFoundException e) {
-////            System.out.println("Unable to locate file");
-////        } catch (IOException e) {
-////            System.out.println("Unable to load courses.");
-////            init();
-////        }
-//    }
-
-    // MODIFIES: this
     // EFFECTS: initializes courses
     private void init() {
         cpsc210 = new Course("CPSC210", cpsc210Assignments);
@@ -212,6 +182,8 @@ public class CourseGradeCalculatorApp {
             doAddAssignment();
         } else if (command.equals("c")) {
             doCreateCourse();
+        } else if (command.equals("k")) {
+            doDeleteCourse();
         } else if (command.equals("s")) {
             for (Course course : courses) {
                 saveCourse(course);
@@ -232,11 +204,12 @@ public class CourseGradeCalculatorApp {
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tc -> create course");
+        System.out.println("\tk -> delete course");
         System.out.println("\ta -> add assignment");
         System.out.println("\td -> delete assignment");
         System.out.println("\tv -> view assignments");
         System.out.println("\tg -> view course grade average");
-        System.out.println("\ts -> save assignments");
+        System.out.println("\ts -> save courses");
         System.out.println("\tq -> quit");
     }
 
@@ -262,6 +235,26 @@ public class CourseGradeCalculatorApp {
         Assignment newAssignment = new Assignment(name, grade, weight);
         selected.addAssignment(newAssignment);
         System.out.println("Assignment added successfully!");
+    }
+
+    // TODO: clauses
+    private void doDeleteCourse() {
+        System.out.println("Please select which course you would like to delete: ");
+        Course selected = selectCourse();
+        removeCourseFile(selected);
+        courses.remove(selected);
+        System.out.println("Course successfully deleted!");
+    }
+
+    // TODO: clauses
+    private void removeCourseFile(Course course) {
+        String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
+        File f = new File(filePath);
+        if (f.delete()) {
+            System.out.println(course.getCourseName() + "file successfully removed.");
+        } else {
+            System.out.println("Unable to delete that file");
+        }
     }
 
     // MODIFIES: this
