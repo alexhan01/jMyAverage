@@ -36,9 +36,9 @@ public class PersistenceTest {
             assertEquals(testAssignments, readCourse.getAssignments());
         } catch (IOException e) {
             fail("IOException should not have been thrown");
+        } finally {
+            File testF = new File(testFilePath);
+            testF.delete();
         }
-
-        File testF = new File(testFilePath);
-        testF.delete();
     }
 }
