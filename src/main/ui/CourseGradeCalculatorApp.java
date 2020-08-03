@@ -22,6 +22,13 @@ public class CourseGradeCalculatorApp {
         runCourseGradeCalculator();
     }
 
+    // TODO: Create course function
+    public Course createCourse(String name) {
+        ArrayList<Assignment> newCourseAssignments = new ArrayList<>();
+        Course newCourse = new Course(name,newCourseAssignments);
+        return newCourse;
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user input to run the application
     private void runCourseGradeCalculator() {
@@ -29,7 +36,13 @@ public class CourseGradeCalculatorApp {
         String command = null;
         input = new Scanner(System.in);
 
-        loadCourses();
+        loadCourse();
+
+//        for (Course course : courses) {
+//            loadCourse();
+//        }
+//        Method of loading all the json files in /data folder to ArrayList<Course> courses;
+//        Iterate over the data folder, running the loadCourse() method on each file
 
         while (keepRunning) {
             displayMenu();
@@ -47,37 +60,88 @@ public class CourseGradeCalculatorApp {
         System.out.println("\nThanks for using the Course Grade Calculator.");
     }
 
+    // TODO: test
+    private ArrayList<String> possibleInputForCourseSelection() {
+        ArrayList<String> possibleInputs = new ArrayList<>();
+        for (int i = 0; i < courses.size(); i++) {
+            String input = Integer.toString(i + 1);
+            possibleInputs.add(input);
+        }
+        return possibleInputs;
+    }
+
+    // TODO: test
+    // Combine the above possible inputs with the actual course names from list of courses.
+    private ArrayList<String> printPossibleCourses() {
+        ArrayList<String> printedPossibleCourses = new ArrayList<>();
+        int i = 1;
+        for (Course course : courses) {
+            printedPossibleCourses.add(
+                    Integer.toString(i)
+                    + ". "
+                    + course.getCourseName()
+            );
+            i++;
+        }
+        return printedPossibleCourses;
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user command to select target course
+    // TODO: completely redesign this function so it spits out based on the number of courses in the loaded file.
     private Course selectCourse() {
         String selection = "";
 
-        while (!(selection.equals("1") || selection.equals("2"))) {
-            System.out.println("1 for CPSC 210");
-            System.out.println("2 for CPSC 221");
+        // Returns list of possible inputs.
+        ArrayList<String> possibleInputs = possibleInputForCourseSelection();
+
+        // Spit out all the courses available
+        while (!(possibleInputs.contains(selection))) {
+            for (int i = 0; i < printPossibleCourses().size(); i++) {
+                System.out.println(printPossibleCourses().get(i));
+            }
             selection = input.next();
         }
 
-        if (selection.equals("1")) {
-            return cpsc210;
+        // selection parsing
+        if (possibleInputs.contains(selection)) {
+            int pos = Integer.parseInt(selection);
+            int newPos = pos - 1;
+            return courses.get(newPos);
         } else {
             return cpsc221;
         }
+//        if (selection.equals(some element i in the array of possible inputs))
+//            return ith element in the courses list.
+
+//        while (!(selection.equals("1") || selection.equals("2"))) {
+//            System.out.println("1 for CPSC 210");
+//            System.out.println("2 for CPSC 221");
+//            selection = input.next();
+//        }
+//
+//        if (selection.equals("1")) {
+//            return cpsc210;
+//        } else {
+//            return cpsc221;
+//        }
     }
 
     // MODIFIES: this
     // EFFECTS: loads courses from COURSES_FILE, if that file exists;
     //          otherwise initialize accounts with default values
     //TODO: EDIT
-    private void loadCourses() {
+    private void loadCourse() {
+        init();
+//        String filePath = COURSES_FILE + "CPSC 210.json";
 //        try {
-//            // List<Course> courses = Reader.readAccounts(new JSON OBJECT COURSES_FILE))
-//            // write a for loop that takes the name of each entry (e.g. cpsc210, cpsc213)
-//            and assign them as new Course object
+//            course.load(filePath);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to locate file");
 //        } catch (IOException e) {
+//            System.out.println("Unable to load courses.");
 //            init();
 //        }
-        init();
     }
 
     // MODIFIES: this
@@ -91,25 +155,27 @@ public class CourseGradeCalculatorApp {
 
     // EFFECTS: saves state of courses to COURSES_FILE
     // TODO: EDIT
-    private void saveCourse(Course course) {
-        String filePath = COURSES_FILE + course.getCourseName() + ".json";
-        try {
-            course.save(filePath, course);
-        } catch (IOException e) {
-            System.out.println("Unable to save courses");
-        }
-    }
+//    private void saveCourse(Course course) {
+//        String filePath = COURSES_FILE + course.getCourseName() + ".json";
+//        try {
+//            writer.save(filePath, course);
+//        } catch (IOException e) {
+//            System.out.println("Unable to save courses");
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("a")) {
             doAddAssignment();
-        } else if (command.equals("s")) {
-            for (Course course : courses) {
-                saveCourse(course);
-            }
-            System.out.println("Courses saved to file");
+        } else if (command.equals("c")) {
+            doCreateCourse();
+//        } else if (command.equals("s")) {
+//            for (Course course : courses) {
+//                saveCourse(course);
+//            }
+//            System.out.println("Courses saved to file");
         } else if (command.equals("d")) {
             doDeleteAssignment();
         } else if (command.equals("v")) {
@@ -124,12 +190,22 @@ public class CourseGradeCalculatorApp {
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
+        System.out.println("\tc -> create course");
         System.out.println("\ta -> add assignment");
         System.out.println("\td -> delete assignment");
         System.out.println("\tv -> view assignments");
         System.out.println("\tg -> view course grade average");
         System.out.println("\ts -> save assignments");
         System.out.println("\tq -> quit");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a course according to given name
+    private void doCreateCourse() {
+        System.out.println("What is the name of the course?");
+        String name = input.next();
+        courses.add(createCourse(name));
+        System.out.println("Course successfully created!");
     }
 
     // MODIFIES: this
@@ -185,5 +261,4 @@ public class CourseGradeCalculatorApp {
         double courseGradeAverage = selected.getAverage();
         System.out.println(courseGradeAverage);
     }
-
 }

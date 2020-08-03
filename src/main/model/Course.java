@@ -1,9 +1,9 @@
 package model;
 
 import com.google.gson.*;
-import persistence.*;
 import java.io.*;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
@@ -64,7 +64,7 @@ public class Course {
     // MODIFIES: nothing
     // EFFECTS: this helper function returns printedAssignment string structure
     public String printedAssignmentStructure(Assignment assignment, int i) {
-        return  "Assignment #"
+        return "Assignment #"
                 + ++i + " is "
                 + assignment.getName()
                 + " with a grade of "
@@ -124,34 +124,31 @@ public class Course {
         return average;
     }
 
-    //TODO: edit comments
-//    @Override
-    public void save(String filePath, Course course) throws IOException {
-        updateCourseInfo(course);
-        new File(filePath);
-        try (Writer writer = new FileWriter(filePath)) {
-            Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .create();
-            gson.toJson(course, writer);
-        }
-    }
-
     // Fixed issue where average doesn't get updated if getAverage or calculateAverage isn't called
-    private void updateCourseInfo(Course course) {
-        course.calculateAverage();
+    public void updateCourseInfo() {
+        calculateAverage();
     }
-
-//    //TODO: edit comments
-//    public List<Course> load(String filePath, Course course) throws FileNotFoundException {
-//        Gson gson = new GsonBuilder()
-//                .setPrettyPrinting()
-//                .create();
-//        try (Reader reader = new FileReader(filePath)) {
-//            // Convert JSON file to Java Object
-//            Course c = gson.fromJson(reader, Course.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
+}
+//    // TODO: add REQUIRES/MODIFIES/EFFECTS clauses
+//    // TODO: Write tests for this method
+//    public void save(String filePath, Course course) throws IOException {
+//        updateCourseInfo(course);
+//        new File(filePath);
+//        try (Writer writer = new FileWriter(filePath)) {
+//            Gson gson = new GsonBuilder()
+//                    .setPrettyPrinting()
+//                    .create();
+//            gson.toJson(course, writer);
 //        }
 //    }
-}
+
+//    //TODO: edit comments
+//    public Course load(String filePath) throws FileNotFoundException, IOException{
+//        try (Reader reader = new FileReader(filePath)) {
+//            Gson gson = new GsonBuilder()
+//                    .setPrettyPrinting()
+//                    .create();
+//            Course newCourse = gson.fromJson(reader, Course.class);
+//            return newCourse;
+//        }
+//    }
