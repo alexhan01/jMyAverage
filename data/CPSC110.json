@@ -1,0 +1,11 @@
+{
+  "courseName": "CPSC110",
+  "assignments": [
+    {
+      "name": "Quiz1",
+      "grade": 100.0,
+      "weight": 10.0
+    }
+  ],
+  "average": 10.0
+}

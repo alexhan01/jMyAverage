@@ -1,8 +1,8 @@
 {
-  "courseName": "CPSC 210",
+  "courseName": "MATH104",
   "assignments": [
     {
-      "name": "Quiz1",
+      "name": "Test1",
       "grade": 100.0,
       "weight": 10.0
     }

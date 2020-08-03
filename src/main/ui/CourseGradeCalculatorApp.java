@@ -9,7 +9,7 @@ import java.util.*;
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
-    private static final String COURSES_FILE = "./data/"; //TODO: rename this
+    private static final String COURSES_FOLDER = "./data/"; //TODO: rename this
     private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
     private Course cpsc221;
@@ -36,13 +36,11 @@ public class CourseGradeCalculatorApp {
         String command = null;
         input = new Scanner(System.in);
 
-        loadCourse();
-
-//        for (Course course : courses) {
-//            loadCourse();
-//        }
-//        Method of loading all the json files in /data folder to ArrayList<Course> courses;
-//        Iterate over the data folder, running the loadCourse() method on each file
+        try {
+            loadCourses();
+        } catch (Exception e) {
+            init();
+        }
 
         while (keepRunning) {
             displayMenu();
@@ -127,58 +125,80 @@ public class CourseGradeCalculatorApp {
 //        }
     }
 
+    // TODO: the clauses
+    private ArrayList<String> extractFilePaths() {
+        // 1. Extract all necessary file paths
+        File f = new File(COURSES_FOLDER);
+        FilenameFilter jsonFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                String lowercaseName = name.toLowerCase();
+                if (lowercaseName.endsWith(".json")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+        File[] files = f.listFiles(jsonFilter);
+        ArrayList<String> filePaths = new ArrayList<>();
+
+        for (File file : files) {
+            String filePath = file.getAbsolutePath();
+            filePaths.add(filePath);
+        }
+        return filePaths;
+    }
+
+    // TODO: REQUIRES...clauses
+    // EFFECTS: it sets the courses with the attributes from the .json files in data folder
+    // TODO: edit
+    private void loadCourses() throws IOException {
+        CourseReader courseReader = new CourseReader("");
+        ArrayList<String> filePaths = extractFilePaths();
+
+        // 2. send those stream those filepaths to the coursereader
+        for (String filePath : filePaths) {
+            Course newCourse = courseReader.load(filePath); //TODO: change newCourse name
+            courses.add(newCourse);
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: loads courses from COURSES_FILE, if that file exists;
     //          otherwise initialize accounts with default values
-    //TODO: EDIT
-    private void loadCourse() {
-        init();
-//        String filePath = COURSES_FILE + "CPSC 210.json";
-//        try {
-//            course.load(filePath);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to locate file");
-//        } catch (IOException e) {
-//            System.out.println("Unable to load courses.");
-//            init();
-//        }
-    }
+//    //TODO: REMOVE
+//    private void loadCourse() {
+//        init();
+////        try {
+////            course.load(filePath);
+////        } catch (FileNotFoundException e) {
+////            System.out.println("Unable to locate file");
+////        } catch (IOException e) {
+////            System.out.println("Unable to load courses.");
+////            init();
+////        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: initializes courses
     private void init() {
-        cpsc210 = new Course("CPSC 210", cpsc210Assignments);
-        cpsc221 = new Course("CPSC 221", cpsc221Assignments);
+        cpsc210 = new Course("CPSC210", cpsc210Assignments);
+        cpsc221 = new Course("CPSC221", cpsc221Assignments);
         courses.add(cpsc210);
         courses.add(cpsc221);
     }
 
-//    // EFFECTS: saves state of courses to COURSES_FILE
-//    // TODO: don't use for loop already built into structure below
-//    private void saveCourses() {
-//      try {
-//              hmm..
-//              // a for loop that does writer.write() on each course in the list of courses
-//              // Instantiate new Writer
-//                  // after each for loop, sout("Course saved to file ") + name of file it was saved to
-//              // close the writer
-//              // sout("All courses saved!")
-//      } catch (FileNotFoundException e) {
-//          sout("Unable to save accounts to " + name of file it was saved to
-//      } catch (IOException e) {
-//          e.printStackTrace();
-//      }
-//
-//
     private void saveCourse(Course course) {
-        String filePath = COURSES_FILE + course.getCourseName() + ".json";
+        String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
         CourseWriter writer = new CourseWriter(filePath, course);
         try {
             writer.write(filePath, course);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) { //TODO: Do I need this exception for writer?
             System.out.println("Unable to save courses.");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Unable to save courses.");
         }
     }
 

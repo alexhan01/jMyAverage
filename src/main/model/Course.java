@@ -129,28 +129,3 @@ public class Course {
         calculateAverage();
     }
 }
-//    // TODO: I DONT THINK I NEED THE BELOW - JUST WRITER WOULD SUFFICE
-//
-//    // TODO: add REQUIRES/MODIFIES/EFFECTS clauses
-//    // TODO: Write tests for this method
-//    public void save(String filePath, Course course) throws IOException {
-//        updateCourseInfo(course);
-//        new File(filePath);
-//        try (Writer writer = new FileWriter(filePath)) {
-//            Gson gson = new GsonBuilder()
-//                    .setPrettyPrinting()
-//                    .create();
-//            gson.toJson(course, writer);
-//        }
-//    }
-
-//    //TODO: edit comments
-//    public Course load(String filePath) throws FileNotFoundException, IOException{
-//        try (Reader reader = new FileReader(filePath)) {
-//            Gson gson = new GsonBuilder()
-//                    .setPrettyPrinting()
-//                    .create();
-//            Course newCourse = gson.fromJson(reader, Course.class);
-//            return newCourse;
-//        }
-//    }
