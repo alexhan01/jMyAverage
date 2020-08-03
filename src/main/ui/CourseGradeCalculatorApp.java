@@ -1,7 +1,6 @@
 package ui;
 
-import model.Assignment;
-import model.Course;
+import model.*;
 import persistence.*;
 import java.io.*;
 import java.util.*;
@@ -9,7 +8,7 @@ import java.util.*;
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
-    private static final String COURSES_FOLDER = "./data/"; //TODO: rename this
+    private static final String COURSES_FOLDER = "./data/";
     private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
     private Course cpsc221;
@@ -36,11 +35,7 @@ public class CourseGradeCalculatorApp {
         String command = null;
         input = new Scanner(System.in);
 
-        try {
-            loadCourses();
-        } catch (Exception e) {
-            init();
-        }
+        loadCourses();
 
         while (keepRunning) {
             displayMenu();
@@ -153,14 +148,22 @@ public class CourseGradeCalculatorApp {
     // TODO: REQUIRES...clauses
     // EFFECTS: it sets the courses with the attributes from the .json files in data folder
     // TODO: edit
-    private void loadCourses() throws IOException {
+    private void loadCourses() {
         CourseReader courseReader = new CourseReader("");
         ArrayList<String> filePaths = extractFilePaths();
 
         // 2. send those stream those filepaths to the coursereader
-        for (String filePath : filePaths) {
-            Course newCourse = courseReader.load(filePath); //TODO: change newCourse name
-            courses.add(newCourse);
+        try {
+            if (!(filePaths.size() == 0)) {
+                for (String filePath : filePaths) {
+                    Course newCourse = courseReader.load(filePath); //TODO: change newCourse name
+                    courses.add(newCourse);
+                }
+            } else {
+                init();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

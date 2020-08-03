@@ -17,7 +17,7 @@ public class CourseReader {
     //TODO: consider moving extractfilepaths method here.
 
     //TODO: edit comments
-    public Course load(String filePath) throws FileNotFoundException, IOException {
+    public Course load(String filePath) throws IOException {
         try (Reader reader = new FileReader(filePath)) {
             Gson gson = new GsonBuilder()
                     .setPrettyPrinting()
