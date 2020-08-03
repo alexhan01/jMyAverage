@@ -36,8 +36,9 @@ Implemented for Phase 1:
 - As a user, I want to be able to see the calculated average of the course based on the assignments given
 
 Implemented for Phase 2:
-- As a user, I want to be able to save the assignments list to file
+- As a user, I want to be able to save the assignments list to an associated course .json file
 - As a user, I want to be able to optionally load my Course Grade Calculator from a file when the program starts
+- As a user, I want to be able to create and delete courses
 
 For future:
 - As a user, I want to be able to assign tags to each assignment (e.g. Quiz, Exam, Project, Lecture Lab)
