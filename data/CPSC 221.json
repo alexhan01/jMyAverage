@@ -1,16 +1,5 @@
 {
   "courseName": "CPSC 221",
-  "assignments": [
-    {
-      "name": "hello",
-      "grade": 100.0,
-      "weight": 100.0
-    },
-    {
-      "name": "ProjectPhase1",
-      "grade": 100.0,
-      "weight": 10.0
-    }
-  ],
-  "average": 110.0
+  "assignments": [],
+  "average": 0.0
 }

@@ -2,14 +2,14 @@ package ui;
 
 import model.Assignment;
 import model.Course;
-
+import persistence.*;
 import java.io.*;
 import java.util.*;
 
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
-    private static final String COURSES_FILE = "./data/";
+    private static final String COURSES_FILE = "./data/"; //TODO: rename this
     private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
     private Course cpsc221;
@@ -51,7 +51,7 @@ public class CourseGradeCalculatorApp {
 
             if (command.equals("q")) {
                 keepRunning = false;
-                // method that auto saves here
+                // TODO: method that auto saves here
             } else {
                 processCommand(command);
             }
@@ -109,7 +109,7 @@ public class CourseGradeCalculatorApp {
             int newPos = pos - 1;
             return courses.get(newPos);
         } else {
-            return cpsc221;
+            return cpsc221; //TODO: change so default isn't cpsc221 but test
         }
 //        if (selection.equals(some element i in the array of possible inputs))
 //            return ith element in the courses list.
@@ -153,16 +153,34 @@ public class CourseGradeCalculatorApp {
         courses.add(cpsc221);
     }
 
-    // EFFECTS: saves state of courses to COURSES_FILE
-    // TODO: EDIT
-//    private void saveCourse(Course course) {
-//        String filePath = COURSES_FILE + course.getCourseName() + ".json";
-//        try {
-//            writer.save(filePath, course);
-//        } catch (IOException e) {
-//            System.out.println("Unable to save courses");
-//        }
-//    }
+//    // EFFECTS: saves state of courses to COURSES_FILE
+//    // TODO: don't use for loop already built into structure below
+//    private void saveCourses() {
+//      try {
+//              hmm..
+//              // a for loop that does writer.write() on each course in the list of courses
+//              // Instantiate new Writer
+//                  // after each for loop, sout("Course saved to file ") + name of file it was saved to
+//              // close the writer
+//              // sout("All courses saved!")
+//      } catch (FileNotFoundException e) {
+//          sout("Unable to save accounts to " + name of file it was saved to
+//      } catch (IOException e) {
+//          e.printStackTrace();
+//      }
+//
+//
+    private void saveCourse(Course course) {
+        String filePath = COURSES_FILE + course.getCourseName() + ".json";
+        CourseWriter writer = new CourseWriter(filePath, course);
+        try {
+            writer.write(filePath, course);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save courses.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user command
@@ -171,11 +189,11 @@ public class CourseGradeCalculatorApp {
             doAddAssignment();
         } else if (command.equals("c")) {
             doCreateCourse();
-//        } else if (command.equals("s")) {
-//            for (Course course : courses) {
-//                saveCourse(course);
-//            }
-//            System.out.println("Courses saved to file");
+        } else if (command.equals("s")) {
+            for (Course course : courses) {
+                saveCourse(course);
+            }
+            System.out.println("Courses saved to file");
         } else if (command.equals("d")) {
             doDeleteAssignment();
         } else if (command.equals("v")) {
