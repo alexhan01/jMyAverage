@@ -92,16 +92,28 @@ public class CourseTest {
     }
 
     @Test
+    void printedAssignmentStructureTest() {
+        testAssignments.add(testAssignment1);
+        String result = testCourse.printedAssignmentStructure(testAssignment1, 0);
+        assertEquals(
+                "Assignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.",
+                result);
+    }
+
+    @Test
     void printAssignmentsTest() {
-        assertEquals("", testCourse.printAssignments());
-        testCourse.addAssignment(testAssignment1);
+        ArrayList<String> results = new ArrayList<>();
+        results = testCourse.printAssignments();
+        assertTrue(results.size() == 0);
+        testAssignments.add(testAssignment1);
+        testAssignments.add(testAssignment2);
+        results = testCourse.printAssignments();
+        assertTrue(results.size() == 2);
         assertEquals(
-                "\nAssignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.",
-                testCourse.printAssignments());
-        testCourse.addAssignment(testAssignment2);
+                "Assignment #1 is Sample 1 with a grade of 100.0 and weight 70.0.",
+                results.get(0));
         assertEquals(
-                "\nAssignment #1 is Sample 1 with a grade of 100.0 and weight 70.0." +
-                        "\nAssignment #2 is Sample 2 with a grade of 50.0 and weight 30.0.",
-                testCourse.printAssignments());
+                "Assignment #2 is Sample 2 with a grade of 50.0 and weight 30.0.",
+                results.get(1));
     }
 }
