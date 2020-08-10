@@ -21,6 +21,8 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     private JPanel coursesUIPane;
     private JLabel coursesListLabel;
     private JLabel nameLabel;
+    private JLabel averageLabel;
+    private JLabel courseAverage;
     private JTextField courseNameField;
     private JButton deleteCourseButton;
     private JButton createCourseButton;
@@ -54,8 +56,13 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         // Initializing JList + JListModel
         initializeData();
 
+        // Initializing selectedCourse
+        selectedCourse = courses.get(0);
+
         // Initializing Fields
         nameLabel = new JLabel("Course Name");
+        averageLabel = new JLabel("Course Average");
+        courseAverage = new JLabel(String.valueOf(selectedCourse.getAverage()));
         courseNameField = new JTextField(1);
         courseNameField.setSize(50,50);
         courseNameField.addActionListener(this);
@@ -66,16 +73,7 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         createCourseButton = createButton(CREATE_COURSE);
 
         // Adding Components to coursesUIPane
-        coursesUIPane = new JPanel();
-        coursesUIPane.setLayout(new BoxLayout(coursesUIPane, BoxLayout.Y_AXIS));
-        coursesUIPane.add(nameLabel);
-        coursesUIPane.add(courseNameField);
-        coursesUIPane.add(createCourseButton);
-        coursesUIPane.add(deleteCourseButton);
-        coursesUIPane.add(selectCourseButton);
-
-        // Initializing selectedCourse
-        selectedCourse = courses.get(0);
+        initializeCoursesUIPane();
     }
 
     // MODIFIES: this
@@ -92,6 +90,20 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         coursesList.setVisibleRowCount(7);
         coursesList.addListSelectionListener(this);
         coursesListScrollPane = new JScrollPane(coursesList);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes coursesUIPane
+    private void initializeCoursesUIPane() {
+        coursesUIPane = new JPanel();
+        coursesUIPane.setLayout(new BoxLayout(coursesUIPane, BoxLayout.Y_AXIS));
+        coursesUIPane.add(averageLabel);
+        coursesUIPane.add(courseAverage);
+        coursesUIPane.add(nameLabel);
+        coursesUIPane.add(courseNameField);
+        coursesUIPane.add(createCourseButton);
+        coursesUIPane.add(deleteCourseButton);
+        coursesUIPane.add(selectCourseButton);
     }
 
     // EFFECTS: creates button based on given string
