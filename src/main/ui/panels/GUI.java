@@ -1,17 +1,35 @@
 package ui.panels;
 
 import model.*;
+import persistence.CourseReader;
+import persistence.CourseWriter;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.*;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener {
 
-    private ArrayList<Course> courses;
+    private static final String COURSES_FOLDER = "./data/";
+    private ArrayList<Course> courses = new ArrayList<>();
+    private Course selectedCourse;
     private CoursesPanel cp;
     private AssignmentsPanel ap;
-    private PersistencePanel pp;
+
+    // TODO: persistence
+    private JPanel persistencePanel;
+    private JButton loadButton;
+    private JButton saveButton;
+    private static final String LOAD_DATA = "Load Data";
+    private static final String SAVE_DATA = "Save Data";
+
+    // TODO: music stuff
+    private JButton playMusic;
 
     // TODO: delete later temporary for testing purposes
     private Course cpsc210;
@@ -27,19 +45,123 @@ public class GUI extends JFrame {
         setLayout(new FlowLayout()); // Change layout
 
         // TODO: Delete later
-        courses = new ArrayList<>();
+        loadCourses();
+
+        cp = new CoursesPanel(courses);
+        selectedCourse = cp.selectedCourse;
+        ap = new AssignmentsPanel(selectedCourse);
+//        this.selectedCourse = cp.selectedCourse;
+//
+//        if (selectedCourse == null) {
+//            ap = new AssignmentsPanel(cpsc210);
+//        } else {
+//            ap = new AssignmentsPanel(selectedCourse);
+//        }
+
+        initializePersistence();
+
+        add(cp);
+        add(ap);
+        add(persistencePanel);
+    }
+
+    private void initializePersistence() {
+        loadButton = createButton(LOAD_DATA);
+        saveButton = createButton(SAVE_DATA);
+
+        persistencePanel = new JPanel();
+        persistencePanel.setLayout(new BoxLayout(persistencePanel, 1));
+        persistencePanel.add(loadButton);
+        persistencePanel.add(saveButton);
+    }
+
+    // template for creating buttons for courses panel
+    private JButton createButton(String str) {
+        JButton button = new JButton(str);
+        button.setActionCommand(str);
+        button.addActionListener(this);
+        button.setPreferredSize(new Dimension(250,50)); //might delete
+        return button;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals(LOAD_DATA)) {
+            loadCourses();
+        } else if (e.getActionCommand().equals(SAVE_DATA)) {
+            saveCourses();
+        } else {
+            //stub;
+        }
+    }
+
+    // EFFECTS: Creates a list of file paths to the to-be-loaded .json files.
+    private ArrayList<String> extractFilePaths() {
+        File f = new File(COURSES_FOLDER);
+        FilenameFilter jsonFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                String lowercaseName = name.toLowerCase();
+                if (lowercaseName.endsWith(".json")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+        File[] files = f.listFiles(jsonFilter);
+        ArrayList<String> filePaths = new ArrayList<>();
+
+        for (File file : files) {
+            String filePath = file.getAbsolutePath();
+            filePaths.add(filePath);
+        }
+        return filePaths;
+    }
+
+    // EFFECTS: loads the courses from the data folder
+    private void loadCourses() {
+        CourseReader courseReader = new CourseReader();
+        ArrayList<String> filePaths = extractFilePaths();
+
+        try {
+            if (!(filePaths.size() == 0)) {
+                for (String filePath : filePaths) {
+                    Course newCourse = courseReader.load(filePath);
+                    courses.add(newCourse);
+                }
+            } else {
+                initializeCourses();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes courses
+    private void initializeCourses() {
         cpsc210 = new Course("CPSC210", cpsc210Assignments);
         cpsc221 = new Course("CPSC221", cpsc221Assignments);
         courses.add(cpsc210);
         courses.add(cpsc221);
-
-        cp = new CoursesPanel(courses);
-        ap = new AssignmentsPanel(cp.selectedCourse);
-//        pp = new PersistencePanel();
-
-        add(cp);
-        add(ap);
-//        add(pp);
     }
 
+    private void saveCourses() {
+        for (Course course : courses) {
+            saveCourse(course);
+        }
+    }
+
+    // EFFECTS: saves courses to the data folder
+    private void saveCourse(Course course) {
+        String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
+        CourseWriter courseWriter = new CourseWriter();
+        try {
+            courseWriter.write(filePath, course);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Unable to save courses.");
+        }
+    }
 }

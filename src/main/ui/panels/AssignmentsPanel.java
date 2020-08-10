@@ -16,7 +16,6 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
     private Course cpsc210;
     private ArrayList<Assignment> cpsc210Assignments = new ArrayList<>();
 
-
     private Course selectedCourse;
     private JPanel assignmentsUIPane;
     private JPanel labelPane;
@@ -44,7 +43,11 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
 
     // TODO: Stuff to think about: what if selectedCourse is null?
     public AssignmentsPanel(Course selectedCourse) {
-        this.selectedCourse = selectedCourse;
+//        this.selectedCourse = selectedCourse;
+
+        //TODO: delete later
+        cpsc210 = new Course("CPSC 210", cpsc210Assignments);
+        cpsc210Assignments.add(new Assignment("Test", 10, 10));
 
         // TODO: style this panel
         setPreferredSize(
@@ -52,19 +55,12 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
         );
         setLayout(new BoxLayout(this,1));
 
-        // TODO: remove this later
-        cpsc210 = new Course("CPSC210", cpsc210Assignments);
-        Assignment testAssignment = new Assignment("Test",90,10);
-        cpsc210Assignments.add(testAssignment);
-
         if (selectedCourse == null) {
-            testCourseSet();
+            this.selectedCourse = cpsc210;
         } else {
             this.selectedCourse = selectedCourse;
         }
-        init();
 
-        // TODO: initialize inner components
         init();
 
         // TODO: add all components
@@ -75,7 +71,7 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
 
     private void init() {
         // Head Title
-        assignmentsLabel = new JLabel("All Assignments");
+        assignmentsLabel = new JLabel("All Assignments in " + selectedCourse.getCourseName());
 
         // Data
         assignmentsListModel = new DefaultListModel();
@@ -135,17 +131,17 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
         assignmentsUIPane.add(createAssignmentButton);
     }
 
-    // TODO: REMOVE
-    private void testCourseSet() {
-        selectedCourse = cpsc210;
-    }
-
     // template for creating buttons for courses panel
     private JButton createButton(String str) {
         JButton button = new JButton(str);
         button.setActionCommand(str);
         button.addActionListener(this);
         return button;
+    }
+
+    public void update() {
+        init();
+        repaint();
     }
 
     @Override
