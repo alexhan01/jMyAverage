@@ -150,11 +150,45 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        //stub;
+        if (e.getValueIsAdjusting() == false) {
+            if (assignmentsList.getSelectedIndex() == -1) {
+                deleteAssignmentButton.setEnabled(false);
+            } else {
+                deleteAssignmentButton.setEnabled(true);
+            }
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // If it's delete
+        if (e.getActionCommand().equals(DELETE_ASSIGNMENT)) {
+            int index = assignmentsList.getSelectedIndex();
+            selectedCourse.getAssignments().remove(index);
+            assignmentsListModel.removeElementAt(index);
+        } else if (e.getActionCommand().equals(CREATE_ASSIGNMENT)) {
+            String name = nameField.getText();
+            Double grade = Double.parseDouble(gradeField.getText());
+            Double weight = Double.parseDouble(weightField.getText());
+            Assignment newAssignment = new Assignment(name, grade, weight);
+            selectedCourse.addAssignment(newAssignment); //adds to list of assignments
 
+            ArrayList<String> printedAssignments = selectedCourse.printAssignments();
+            int finalIndex = printedAssignments.size() - 1;
+            assignmentsListModel.addElement(printedAssignments.get(finalIndex)); //add to display (need to format here)
+
+            nameField.requestFocusInWindow();
+            nameField.setText("");
+            gradeField.requestFocusInWindow();
+            gradeField.setText("");
+            weightField.requestFocusInWindow();
+            weightField.setText("");
+
+            int lastIndex = assignmentsList.getMaxSelectionIndex();
+            assignmentsList.setSelectedIndex(lastIndex);
+            assignmentsList.ensureIndexIsVisible(lastIndex);
+        } else {
+            //stub; nothing happens
+        }
     }
 }

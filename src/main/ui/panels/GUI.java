@@ -22,7 +22,7 @@ public class GUI extends JFrame {
     public GUI() {
         super("Course Grade Calculator");
         setVisible(true);
-        setSize(500, 500);
+        setSize(1000, 1000);
         setDefaultCloseOperation(3);
         setLayout(new FlowLayout()); // Change layout
 
