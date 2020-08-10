@@ -34,8 +34,12 @@ public class GUI extends JFrame {
         courses.add(cpsc221);
 
         cp = new CoursesPanel(courses);
+        ap = new AssignmentsPanel(cp.selectedCourse);
+//        pp = new PersistencePanel();
 
         add(cp);
+        add(ap);
+//        add(pp);
     }
 
 }

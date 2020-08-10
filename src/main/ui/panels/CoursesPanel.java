@@ -3,6 +3,8 @@ package ui.panels;
 import model.*;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -11,8 +13,8 @@ import java.util.*;
 
 public class CoursesPanel extends JPanel implements ActionListener, ListSelectionListener {
 
-    private ArrayList<Course> courses;
-    private Course selectedCourse;
+    public ArrayList<Course> courses;
+    public Course selectedCourse;
     private JList coursesList;
     private DefaultListModel coursesListModel;
     private JScrollPane coursesListScrollPane;
@@ -49,6 +51,7 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         add(coursesUIPane);
     }
 
+    // TODO: REFACTOR THESE CODES
     // Initializes internal components
     private void init() {
         // Label
@@ -77,7 +80,6 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         selectCourseButton = createButton(SELECT_COURSE);
         deleteCourseButton = createButton(DELETE_COURSE);
         createCourseButton = createButton(CREATE_COURSE);
-        createCourseButton.setEnabled(false);
 
         // Add to panel
         coursesUIPane = new JPanel();
@@ -90,7 +92,7 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         coursesUIPane.add(selectCourseButton);
     }
 
-    // template for creating buttons for coursespanel
+    // template for creating buttons for courses panel
     private JButton createButton(String str) {
         JButton button = new JButton(str);
         button.setActionCommand(str);
@@ -102,14 +104,35 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     public void actionPerformed(ActionEvent e) {
         // If it's select
         if (e.getActionCommand().equals(SELECT_COURSE)) {
-            //stub;
+            int index = coursesList.getSelectedIndex();
+            selectedCourse = courses.get(index);
         } else if (e.getActionCommand().equals(DELETE_COURSE)) {
-            //stub;
+            int index = coursesList.getSelectedIndex();
+            courses.remove(index);
+            coursesListModel.removeElementAt(index);
+            // copy method from app class so I can delete the .json file as well.
         } else if (e.getActionCommand().equals(CREATE_COURSE)) {
-            //stub
+            String courseName = courseNameField.getText();
+            courses.add(createCourse(courseName)); //adds to courses list
+            coursesListModel.addElement(courseName); //add to display
+
+            courseNameField.requestFocusInWindow(); //reset
+            courseNameField.setText(""); //reset
+
+            int lastIndex = coursesList.getMaxSelectionIndex();
+            coursesList.setSelectedIndex(lastIndex);
+            coursesList.ensureIndexIsVisible(lastIndex);
         } else {
-            //stub;
+            //stub; Nothing Happens
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new course
+    public Course createCourse(String name) {
+        ArrayList<Assignment> newCourseAssignments = new ArrayList<>();
+        Course newCourse = new Course(name, newCourseAssignments);
+        return newCourse;
     }
 
     @Override
