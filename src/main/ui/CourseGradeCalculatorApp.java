@@ -9,6 +9,7 @@ import java.util.*;
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
+
     private static final String COURSES_FOLDER = "./data/";
     private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
@@ -22,10 +23,11 @@ public class CourseGradeCalculatorApp {
         runCourseGradeCalculator();
     }
 
-    // TODO: Create course function
+    // MODIFIES: this
+    // EFFECTS: creates a new course
     public Course createCourse(String name) {
         ArrayList<Assignment> newCourseAssignments = new ArrayList<>();
-        Course newCourse = new Course(name,newCourseAssignments);
+        Course newCourse = new Course(name, newCourseAssignments);
         return newCourse;
     }
 
