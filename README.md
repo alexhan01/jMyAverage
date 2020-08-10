@@ -55,3 +55,8 @@ to delete the selected course.
 button or looking at the ./data/sound/music.wav file
 - You can save the state of my application by pressing the "Save Data" button
 - You can reload the state of my application by pressing the "Load Data" button
+
+## Phase 4: Task 2
+
+- I implemented an appropriate use of Map in the GUI class under panels
+- The Map is used to store the various assignmentsPanel associated to each course
