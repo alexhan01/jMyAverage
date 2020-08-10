@@ -15,7 +15,7 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     private static final String COURSES_FOLDER = "./data/";
     public ArrayList<Course> courses;
     private Course selectedCourse;
-    private JList coursesList;
+    public JList coursesList;
     private DefaultListModel coursesListModel;
     private JScrollPane coursesListScrollPane;
     private JPanel coursesUIPane;
@@ -26,7 +26,6 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     private JTextField courseNameField;
     private JButton deleteCourseButton;
     private JButton createCourseButton;
-    private JButton selectCourseButton;
     private static final String DELETE_COURSE = "Delete Course";
     private static final String CREATE_COURSE = "Create Course";
     private static final String SELECT_COURSE = "Select Course";
@@ -68,7 +67,6 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         courseNameField.addActionListener(this);
 
         // Initializing Buttons
-        selectCourseButton = createButton(SELECT_COURSE);
         deleteCourseButton = createButton(DELETE_COURSE);
         createCourseButton = createButton(CREATE_COURSE);
 
@@ -103,7 +101,6 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         coursesUIPane.add(courseNameField);
         coursesUIPane.add(createCourseButton);
         coursesUIPane.add(deleteCourseButton);
-        coursesUIPane.add(selectCourseButton);
     }
 
     // EFFECTS: creates button based on given string
@@ -116,18 +113,12 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Case 1: Select Course
-        if (e.getActionCommand().equals(SELECT_COURSE)) {
-            int index = coursesList.getSelectedIndex();
-            selectedCourse = courses.get(index);
-        // Case 2: Delete Course
-        } else if (e.getActionCommand().equals(DELETE_COURSE)) {
+        if (e.getActionCommand().equals(DELETE_COURSE)) {
             int index = coursesList.getSelectedIndex();
             Course deleteCourse = courses.get(index);
             removeCourseFile(deleteCourse);
             courses.remove(deleteCourse);
             coursesListModel.removeElementAt(index);
-        // Case 3: Create Course
         } else if (e.getActionCommand().equals(CREATE_COURSE)) {
             String courseName = courseNameField.getText();
             courses.add(createCourse(courseName));
@@ -168,10 +159,10 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
             if (coursesList.getSelectedIndex() == -1) {
-                selectCourseButton.setEnabled(false);
+//                selectCourseButton.setEnabled(false);
                 deleteCourseButton.setEnabled(false);
             } else {
-                selectCourseButton.setEnabled(true);
+//                selectCourseButton.setEnabled(true);
                 deleteCourseButton.setEnabled(true);
             }
         }

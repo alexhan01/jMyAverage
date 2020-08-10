@@ -22,6 +22,8 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel persistencePanel;
     private JButton loadButton;
     private JButton saveButton;
+    private JButton selectCourseButton;
+    private static final String SELECT = "Select Course";
     private static final String LOAD_DATA = "Load Data";
     private static final String SAVE_DATA = "Save Data";
     private static final String MUSIC = "Play Music";
@@ -30,6 +32,7 @@ public class GUI extends JFrame implements ActionListener {
     private Course cpsc221;
     private ArrayList<Assignment> cpsc210Assignments = new ArrayList<>();
     private ArrayList<Assignment> cpsc221Assignments = new ArrayList<>();
+    private Map<Course, AssignmentsPanel> aps = new HashMap<>();
 
     // EFFECTS: constructs the graphical user interface
     public GUI() {
@@ -42,9 +45,10 @@ public class GUI extends JFrame implements ActionListener {
 
         cp = new CoursesPanel(courses);
         selectedCourse = cp.getSelectedCourse();
-        ap = new AssignmentsPanel(selectedCourse);
 
+        createAps();
         initializePersistence();
+        ap = aps.get(selectedCourse);
 
         add(cp);
         add(ap);
@@ -54,16 +58,26 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: initializes aps with courses
+    private void createAps() {
+        for (Course course : courses) {
+            aps.put(course, new AssignmentsPanel(course));
+        }
+    }
+
+    // MODIFIES: this
     // EFFECTS: allows save and load functionality
     private void initializePersistence() {
         loadButton = createButton(LOAD_DATA);
         saveButton = createButton(SAVE_DATA);
         playMusic = createButton(MUSIC);
+        selectCourseButton = createButton(SELECT);
 
         persistencePanel = new JPanel();
         persistencePanel.setLayout(new BoxLayout(persistencePanel, 1));
         persistencePanel.add(loadButton);
         persistencePanel.add(saveButton);
+        persistencePanel.add(selectCourseButton);
         persistencePanel.add(playMusic);
     }
 
@@ -84,13 +98,32 @@ public class GUI extends JFrame implements ActionListener {
             saveCourses();
         } else if (e.getActionCommand().equals(MUSIC)) {
             playSound("./data/sound/music.wav");
+        } else if (e.getActionCommand().equals(SELECT)) {
+            int index = cp.coursesList.getSelectedIndex();
+            remove(ap);
+            remove(persistencePanel);
+            apsUpdate();
+            selectedCourse = courses.get(index);
+            ap = aps.get(selectedCourse);
+            add(ap);
+            add(persistencePanel);
         }
         update();
     }
 
     // MODIFIES: this
+    // EFFECTS: updates aps
+    private void apsUpdate() {
+        for (Course course : courses) {
+            if (!(aps.containsKey(course))) {
+                aps.put(course, new AssignmentsPanel(course));
+            }
+        }
+    }
+
+    // MODIFIES: this
     // EFFECTS: updates necessary components
-    private void update() {
+    public void update() {
         cp.courseAverage.setText(String.valueOf(selectedCourse.getAverage()));
     }
 

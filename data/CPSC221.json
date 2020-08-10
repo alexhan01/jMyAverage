@@ -1,5 +1,11 @@
 {
   "courseName": "CPSC221",
-  "assignments": [],
-  "average": 0.0
+  "assignments": [
+    {
+      "name": "Quiz1",
+      "grade": 98.0,
+      "weight": 20.0
+    }
+  ],
+  "average": 19.6
 }

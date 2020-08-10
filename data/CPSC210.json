@@ -1,5 +1,21 @@
 {
   "courseName": "CPSC210",
-  "assignments": [],
-  "average": 0.0
+  "assignments": [
+    {
+      "name": "Quiz1",
+      "grade": 98.0,
+      "weight": 10.0
+    },
+    {
+      "name": "Test1",
+      "grade": 90.0,
+      "weight": 5.0
+    },
+    {
+      "name": "Quiz2",
+      "grade": 98.0,
+      "weight": 10.0
+    }
+  ],
+  "average": 24.1
 }
