@@ -1,0 +1,21 @@
+{
+  "courseName": "MATH104",
+  "assignments": [
+    {
+      "name": "Quiz1",
+      "grade": 100.0,
+      "weight": 20.0
+    },
+    {
+      "name": "Final Exam",
+      "grade": 87.0,
+      "weight": 45.0
+    },
+    {
+      "name": "WebWork",
+      "grade": 100.0,
+      "weight": 35.0
+    }
+  ],
+  "average": 94.15
+}
