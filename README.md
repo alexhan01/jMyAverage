@@ -45,8 +45,13 @@ For future:
 
 ## Instructions for Grader
 
-- You can generate the first required event by...
-- You can generate the second required event by...
-- You can locate my visual component by... 
-- You can save the state of my application by...
-- You can reload the state of my application by...
+- You can generate the first required event by pressing the
+ "Create Course" button (which creates a course based on the name
+ given in the JTextField under Course Name)
+- You can generate the second required event by selecting a course
+from the list of courses visible and pressing the "Delete Course" button
+to delete the selected course.
+- You can locate my audio component by either pressing the "Play Music"
+button or looking at the ./data/sound/music.wav file
+- You can save the state of my application by pressing the "Save Data" button
+- You can reload the state of my application by pressing the "Load Data" button
