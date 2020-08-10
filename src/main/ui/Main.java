@@ -1,6 +1,6 @@
 package ui;
 
-import ui.Panels.*;
+import ui.panels.*;
 
 // Run to start Course Grade Calculator Application
 public class Main {
@@ -9,6 +9,6 @@ public class Main {
 //        new CourseGradeCalculatorApp();
 
         // For running GUI ver
-        new CourseGradeCalculatorGUI();
+        new GUI();
     }
 }
