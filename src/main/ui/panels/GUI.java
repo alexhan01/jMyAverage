@@ -5,58 +5,43 @@ import persistence.CourseReader;
 import persistence.CourseWriter;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
+// Source: inspired/modified from ListDemo and SpaceInvaders
+// Course grade calculator application graphic user interface
 public class GUI extends JFrame implements ActionListener {
-
     private static final String COURSES_FOLDER = "./data/";
     private ArrayList<Course> courses = new ArrayList<>();
     private Course selectedCourse;
     private CoursesPanel cp;
     private AssignmentsPanel ap;
-
-    // TODO: persistence
     private JPanel persistencePanel;
     private JButton loadButton;
     private JButton saveButton;
     private static final String LOAD_DATA = "Load Data";
     private static final String SAVE_DATA = "Save Data";
-
-    // TODO: music stuff
     private JButton playMusic;
-
-    // TODO: delete later temporary for testing purposes
     private Course cpsc210;
     private Course cpsc221;
     private ArrayList<Assignment> cpsc210Assignments = new ArrayList<>();
     private ArrayList<Assignment> cpsc221Assignments = new ArrayList<>();
 
+    // EFFECTS: constructs the graphical user interface
     public GUI() {
         super("Course Grade Calculator");
         setVisible(true);
         setSize(1000, 1000);
         setDefaultCloseOperation(3);
-        setLayout(new FlowLayout()); // Change layout
+        setLayout(new FlowLayout());
 
-        // TODO: Delete later
         loadCourses();
 
         cp = new CoursesPanel(courses);
-        selectedCourse = cp.selectedCourse;
+        selectedCourse = cp.getSelectedCourse();
         ap = new AssignmentsPanel(selectedCourse);
-//        this.selectedCourse = cp.selectedCourse;
-//
-//        if (selectedCourse == null) {
-//            ap = new AssignmentsPanel(cpsc210);
-//        } else {
-//            ap = new AssignmentsPanel(selectedCourse);
-//        }
 
         initializePersistence();
 
@@ -65,6 +50,8 @@ public class GUI extends JFrame implements ActionListener {
         add(persistencePanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: allows save and load functionality
     private void initializePersistence() {
         loadButton = createButton(LOAD_DATA);
         saveButton = createButton(SAVE_DATA);
@@ -75,7 +62,7 @@ public class GUI extends JFrame implements ActionListener {
         persistencePanel.add(saveButton);
     }
 
-    // template for creating buttons for courses panel
+    // EFFECTS: creates button based on given string
     private JButton createButton(String str) {
         JButton button = new JButton(str);
         button.setActionCommand(str);
@@ -90,8 +77,6 @@ public class GUI extends JFrame implements ActionListener {
             loadCourses();
         } else if (e.getActionCommand().equals(SAVE_DATA)) {
             saveCourses();
-        } else {
-            //stub;
         }
     }
 
@@ -147,6 +132,7 @@ public class GUI extends JFrame implements ActionListener {
         courses.add(cpsc221);
     }
 
+    // EFFECTS: saves courses to the data folder
     private void saveCourses() {
         for (Course course : courses) {
             saveCourse(course);

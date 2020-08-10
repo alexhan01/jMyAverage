@@ -1,62 +1,86 @@
 package ui.panels;
 
-import javafx.beans.Observable;
 import model.*;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 
+// Source: inspired/modified from ListDemo and SpaceInvaders
+// Represents JPanel that allows user interaction with courses
 public class CoursesPanel extends JPanel implements ActionListener, ListSelectionListener {
-
+    private static final String COURSES_FOLDER = "./data/";
     public ArrayList<Course> courses;
-    public Course selectedCourse;
+    private Course selectedCourse;
     private JList coursesList;
     private DefaultListModel coursesListModel;
     private JScrollPane coursesListScrollPane;
     private JPanel coursesUIPane;
     private JLabel coursesListLabel;
-
     private JLabel nameLabel;
     private JTextField courseNameField;
-
     private JButton deleteCourseButton;
     private JButton createCourseButton;
     private JButton selectCourseButton;
-
     private static final String DELETE_COURSE = "Delete Course";
     private static final String CREATE_COURSE = "Create Course";
     private static final String SELECT_COURSE = "Select Course";
 
-    // Constructor
+    // EFFECTS: constructs the Courses Panel
     public CoursesPanel(ArrayList<Course> courses) {
         this.courses = courses;
 
-        // TODO: Initialize Panel Stuff (fix)
         setPreferredSize(
-                new Dimension(250,250) //TODO: Make it variable sizing
+                new Dimension(250,250)
         );
         setLayout(new BoxLayout(this,1));
 
-        // TODO: Initialize inner components
         init();
 
-        // TODO: Add everything to panel
         add(coursesListLabel);
         add(coursesListScrollPane);
         add(coursesUIPane);
     }
 
-    // TODO: REFACTOR THESE CODES
-    // Initializes internal components
+    // MODIFIES: this
+    // EFFECTS: initializes the various components
     private void init() {
-        // Label
+        // Initializing Main Label
         coursesListLabel = new JLabel("All Courses");
 
-        // Data
+        // Initializing JList + JListModel
+        initializeData();
+
+        // Initializing Fields
+        nameLabel = new JLabel("Course Name");
+        courseNameField = new JTextField(1);
+        courseNameField.setSize(50,50);
+        courseNameField.addActionListener(this);
+
+        // Initializing Buttons
+        selectCourseButton = createButton(SELECT_COURSE);
+        deleteCourseButton = createButton(DELETE_COURSE);
+        createCourseButton = createButton(CREATE_COURSE);
+
+        // Adding Components to coursesUIPane
+        coursesUIPane = new JPanel();
+        coursesUIPane.setLayout(new BoxLayout(coursesUIPane, BoxLayout.Y_AXIS));
+        coursesUIPane.add(nameLabel);
+        coursesUIPane.add(courseNameField);
+        coursesUIPane.add(createCourseButton);
+        coursesUIPane.add(deleteCourseButton);
+        coursesUIPane.add(selectCourseButton);
+
+        // Initializing selectedCourse
+        selectedCourse = courses.get(0);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes JList + JListModel components
+    private void initializeData() {
         coursesListModel = new DefaultListModel();
         for (Course course : courses) {
             coursesListModel.addElement(course.getCourseName());
@@ -68,30 +92,9 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         coursesList.setVisibleRowCount(7);
         coursesList.addListSelectionListener(this);
         coursesListScrollPane = new JScrollPane(coursesList);
-
-        // Fields to create new course
-        nameLabel = new JLabel("Course Name");
-        courseNameField = new JTextField(1);
-        courseNameField.setSize(50,50); //TODO: make it variable sizing
-        courseNameField.addActionListener(this);
-
-        // Buttons
-        selectCourseButton = createButton(SELECT_COURSE);
-        deleteCourseButton = createButton(DELETE_COURSE);
-        createCourseButton = createButton(CREATE_COURSE);
-
-        // Add to panel
-        coursesUIPane = new JPanel();
-        coursesUIPane.setLayout(new BoxLayout(coursesUIPane, BoxLayout.Y_AXIS));
-//        coursesUIPane.setLayout(new FlowLayout());
-        coursesUIPane.add(nameLabel);
-        coursesUIPane.add(courseNameField);
-        coursesUIPane.add(createCourseButton);
-        coursesUIPane.add(deleteCourseButton);
-        coursesUIPane.add(selectCourseButton);
     }
 
-    // template for creating buttons for courses panel
+    // EFFECTS: creates button based on given string
     private JButton createButton(String str) {
         JButton button = new JButton(str);
         button.setActionCommand(str);
@@ -101,29 +104,44 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // If it's select
+        // Case 1: Select Course
         if (e.getActionCommand().equals(SELECT_COURSE)) {
             int index = coursesList.getSelectedIndex();
             selectedCourse = courses.get(index);
+        // Case 2: Delete Course
         } else if (e.getActionCommand().equals(DELETE_COURSE)) {
             int index = coursesList.getSelectedIndex();
-            courses.remove(index);
+            Course deleteCourse = courses.get(index);
+            removeCourseFile(deleteCourse);
+            courses.remove(deleteCourse);
             coursesListModel.removeElementAt(index);
-            // copy method from app class so I can delete the .json file as well.
+        // Case 3: Create Course
         } else if (e.getActionCommand().equals(CREATE_COURSE)) {
             String courseName = courseNameField.getText();
-            courses.add(createCourse(courseName)); //adds to courses list
-            coursesListModel.addElement(courseName); //add to display
-
-            courseNameField.requestFocusInWindow(); //reset
-            courseNameField.setText(""); //reset
-
+            courses.add(createCourse(courseName));
+            coursesListModel.addElement(courseName);
+            courseNameField.requestFocusInWindow();
+            courseNameField.setText("");
             int lastIndex = coursesList.getMaxSelectionIndex();
             coursesList.setSelectedIndex(lastIndex);
             coursesList.ensureIndexIsVisible(lastIndex);
-        } else {
-            //stub; Nothing Happens
         }
+    }
+
+    // EFFECTS: removes associated .json file for the selected course
+    private void removeCourseFile(Course course) {
+        String filePath = COURSES_FOLDER + course.getCourseName() + ".json";
+        File f = new File(filePath);
+        if (f.delete()) {
+            System.out.println(course.getCourseName() + " file successfully removed.");
+        } else {
+            System.out.println("Unable to delete that file");
+        }
+    }
+
+    // EFFECTS: returns selectedCourse
+    public Course getSelectedCourse() {
+        return selectedCourse;
     }
 
     // MODIFIES: this
