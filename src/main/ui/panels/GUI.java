@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import javax.sound.sampled.*;
 
 // Source: inspired/modified from ListDemo and SpaceInvaders
 // Course grade calculator application graphic user interface
@@ -23,6 +24,7 @@ public class GUI extends JFrame implements ActionListener {
     private JButton saveButton;
     private static final String LOAD_DATA = "Load Data";
     private static final String SAVE_DATA = "Save Data";
+    private static final String MUSIC = "Play Music";
     private JButton playMusic;
     private Course cpsc210;
     private Course cpsc221;
@@ -32,8 +34,7 @@ public class GUI extends JFrame implements ActionListener {
     // EFFECTS: constructs the graphical user interface
     public GUI() {
         super("Course Grade Calculator");
-        setVisible(true);
-        setSize(1000, 1000);
+        setSize(1500, 600);
         setDefaultCloseOperation(3);
         setLayout(new FlowLayout());
 
@@ -48,6 +49,8 @@ public class GUI extends JFrame implements ActionListener {
         add(cp);
         add(ap);
         add(persistencePanel);
+
+        setVisible(true);
     }
 
     // MODIFIES: this
@@ -55,11 +58,13 @@ public class GUI extends JFrame implements ActionListener {
     private void initializePersistence() {
         loadButton = createButton(LOAD_DATA);
         saveButton = createButton(SAVE_DATA);
+        playMusic = createButton(MUSIC);
 
         persistencePanel = new JPanel();
         persistencePanel.setLayout(new BoxLayout(persistencePanel, 1));
         persistencePanel.add(loadButton);
         persistencePanel.add(saveButton);
+        persistencePanel.add(playMusic);
     }
 
     // EFFECTS: creates button based on given string
@@ -77,6 +82,8 @@ public class GUI extends JFrame implements ActionListener {
             loadCourses();
         } else if (e.getActionCommand().equals(SAVE_DATA)) {
             saveCourses();
+        } else if (e.getActionCommand().equals(MUSIC)) {
+            playSound("./data/sound/music.wav");
         }
     }
 
@@ -148,6 +155,20 @@ public class GUI extends JFrame implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unable to save courses.");
+        }
+    }
+
+    // EFFECTS: plays music.wav
+    public void playSound(String musicName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
+                    new File(musicName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error playing music");
+            e.printStackTrace();
         }
     }
 }
