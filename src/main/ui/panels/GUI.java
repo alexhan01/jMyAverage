@@ -85,6 +85,13 @@ public class GUI extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(MUSIC)) {
             playSound("./data/sound/music.wav");
         }
+        update();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates necessary components
+    private void update() {
+        cp.courseAverage.setText(String.valueOf(selectedCourse.getAverage()));
     }
 
     // EFFECTS: Creates a list of file paths to the to-be-loaded .json files.

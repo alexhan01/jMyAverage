@@ -1,0 +1,21 @@
+{
+  "courseName": "MATH105",
+  "assignments": [
+    {
+      "name": "Quiz1",
+      "grade": 100.0,
+      "weight": 50.0
+    },
+    {
+      "name": "Quiz2",
+      "grade": 90.0,
+      "weight": 30.0
+    },
+    {
+      "name": "Quiz3",
+      "grade": 90.0,
+      "weight": 10.0
+    }
+  ],
+  "average": 86.0
+}

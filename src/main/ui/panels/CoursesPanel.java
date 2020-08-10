@@ -22,7 +22,7 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
     private JLabel coursesListLabel;
     private JLabel nameLabel;
     private JLabel averageLabel;
-    private JLabel courseAverage;
+    public JLabel courseAverage;
     private JTextField courseNameField;
     private JButton deleteCourseButton;
     private JButton createCourseButton;

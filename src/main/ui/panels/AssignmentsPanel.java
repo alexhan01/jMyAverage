@@ -15,7 +15,7 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
     private JPanel assignmentsUIPane;
     private JPanel labelPane;
     private JPanel fieldPane;
-    private JLabel assignmentsLabel;
+    public JLabel assignmentsLabel;
     private JList assignmentsList;
     private DefaultListModel assignmentsListModel;
     private JScrollPane assignmentsListScrollPane;
@@ -78,7 +78,7 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
 
     // MODIFIES: this
     // EFFECTS: initializes JList + JListModel components
-    private void initializeData() {
+    public void initializeData() {
         assignmentsListModel = new DefaultListModel();
         ArrayList<String> printedAssignments = selectedCourse.printAssignments();
         for (String a : printedAssignments) {
