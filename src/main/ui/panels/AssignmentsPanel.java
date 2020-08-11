@@ -67,21 +67,28 @@ public class AssignmentsPanel extends PanelStyler implements ListSelectionListen
         createAssignmentButton = createButton(CREATE_ASSIGNMENT);
 
         // Adding components to labelPane
-        initializeLabelPane();
+        labelPane = new JPanel();
+        initializeUIPane(
+                labelPane,
+                new Component[] { nameLabel, gradeLabel, weightLabel },
+                0
+        );
 
         // Adding components to fieldPane
-        initializeFieldPane();
+        fieldPane = new JPanel();
+        initializeUIPane(
+                fieldPane,
+                new Component[] { nameField, gradeField, weightField },
+                0
+        );
 
         // Adding components to assignmentsUIPane
         assignmentsUIPane = new JPanel();
         initializeUIPane(
                 assignmentsUIPane,
-                new Component[]{
-                        labelPane,
-                        fieldPane,
-                        deleteAssignmentButton,
-                        createAssignmentButton
-                });
+                new Component[]{ labelPane, fieldPane, deleteAssignmentButton, createAssignmentButton },
+                1
+        );
     }
 
     // MODIFIES: this
@@ -92,13 +99,8 @@ public class AssignmentsPanel extends PanelStyler implements ListSelectionListen
         for (String a : printedAssignments) {
             assignmentsListModel.addElement(a);
         }
-
         assignmentsList = new JList(assignmentsListModel);
-
-        assignmentsList.setSelectionMode(0);
-        assignmentsList.setSelectedIndex(0);
-        assignmentsList.setVisibleRowCount(7);
-        assignmentsList.addListSelectionListener(this);
+        listStyler(assignmentsList);
         assignmentsListScrollPane = new JScrollPane(assignmentsList);
     }
 
@@ -120,26 +122,6 @@ public class AssignmentsPanel extends PanelStyler implements ListSelectionListen
         weightField = new JTextField(1);
         weightField.setSize(10,10);
         weightField.addActionListener(this);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes labelPane
-    private void initializeLabelPane() {
-        labelPane = new JPanel();
-        labelPane.setLayout(new BoxLayout(labelPane, 0));
-        labelPane.add(nameLabel);
-        labelPane.add(gradeLabel);
-        labelPane.add(weightLabel);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes fieldPane
-    private void initializeFieldPane() {
-        fieldPane = new JPanel();
-        fieldPane.setLayout(new BoxLayout(fieldPane, 0));
-        fieldPane.add(nameField);
-        fieldPane.add(gradeField);
-        fieldPane.add(weightField);
     }
 
     @Override

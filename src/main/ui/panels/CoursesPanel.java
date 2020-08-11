@@ -58,13 +58,8 @@ public class CoursesPanel extends PanelStyler implements ActionListener, ListSel
         // Initializing selectedCourse
         selectedCourse = courses.get(0);
 
-        // Initializing Fields
-        nameLabel = new JLabel("Course Name");
-        averageLabel = new JLabel("Course Average");
-        courseAverage = new JLabel(String.valueOf(selectedCourse.getAverage()));
-        courseNameField = new JTextField(1);
-        courseNameField.setSize(50,50);
-        courseNameField.addActionListener(this);
+        // Initializing UIPane Fields + Labels
+        initializeFieldsAndLabels();
 
         // Initializing Buttons
         deleteCourseButton = createButton(DELETE_COURSE);
@@ -81,7 +76,19 @@ public class CoursesPanel extends PanelStyler implements ActionListener, ListSel
                         courseNameField,
                         createCourseButton,
                         deleteCourseButton
-                });
+                },
+                1);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes fields + labels
+    private void initializeFieldsAndLabels() {
+        nameLabel = new JLabel("Course Name");
+        averageLabel = new JLabel("Course Average");
+        courseAverage = new JLabel(String.valueOf(selectedCourse.getAverage()));
+        courseNameField = new JTextField(1);
+        courseNameField.setSize(50,50);
+        courseNameField.addActionListener(this);
     }
 
     // MODIFIES: this
@@ -91,12 +98,8 @@ public class CoursesPanel extends PanelStyler implements ActionListener, ListSel
         for (Course course : courses) {
             coursesListModel.addElement(course.getCourseName());
         }
-
         coursesList = new JList(coursesListModel);
-        coursesList.setSelectionMode(0);
-        coursesList.setSelectedIndex(0);
-        coursesList.setVisibleRowCount(7);
-        coursesList.addListSelectionListener(this);
+        listStyler(coursesList);
         coursesListScrollPane = new JScrollPane(coursesList);
     }
 

@@ -66,6 +66,9 @@ Problems:
 - (Coupling) AssignmentsPanel and CoursesPanel both have the same createCourse method - repetitive.
 - (Coupling) AssignmentsPanel and CoursesPanel both share implementation
 detail for the method that adds components to the main JPanel (i.e. initializeUIPane) - repetitive.
+- (Coupling) Styling parts of initializeData method in AssignmentsPanel and CoursesPanel 
+is repetitive
 
 Solution:
-- Created a PanelStyler class to store methods for the above
+- Created a PanelStyler class to store methods for the above and reduce repetition
+and eliminate problematic coupling
