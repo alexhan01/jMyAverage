@@ -60,3 +60,7 @@ button or looking at the ./data/sound/music.wav file
 
 - I implemented an appropriate use of Map in the GUI class under panels
 - The Map is used to store the various assignmentsPanel associated to each course
+
+## Phase 4: Task 3
+- Example 1
+- Example 2

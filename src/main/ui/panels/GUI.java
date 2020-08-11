@@ -198,6 +198,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
+    // Source: http://suavesnippets.blogspot.com/2011/06/add-sound-on-jbutton-click-in-java.html
     // EFFECTS: plays music.wav
     public void playSound(String musicName) {
         try {
