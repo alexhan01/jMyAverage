@@ -28,7 +28,6 @@ public class CoursesPanel extends PanelStyler implements ActionListener, ListSel
     private JButton createCourseButton;
     private static final String DELETE_COURSE = "Delete Course";
     private static final String CREATE_COURSE = "Create Course";
-    private static final String SELECT_COURSE = "Select Course";
 
     // EFFECTS: constructs the Courses Panel
     public CoursesPanel(ArrayList<Course> courses) {

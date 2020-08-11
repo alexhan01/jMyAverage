@@ -34,7 +34,7 @@ public class AssignmentsPanel extends PanelStyler implements ListSelectionListen
     public AssignmentsPanel(Course selectedCourse) {
         // Styles Panel
         setPreferredSize(
-                new Dimension(500,250) //TODO: Make it variable sizing
+                new Dimension(500,250)
         );
         setLayout(new BoxLayout(this,1));
 

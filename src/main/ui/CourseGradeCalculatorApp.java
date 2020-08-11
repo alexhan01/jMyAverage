@@ -9,7 +9,6 @@ import java.util.*;
 // Source: inspired/modified from TellerApp
 // Course grade calculator application
 public class CourseGradeCalculatorApp {
-
     private static final String COURSES_FOLDER = "./data/";
     private ArrayList<Course> courses = new ArrayList<>();
     private Course cpsc210;
