@@ -62,5 +62,10 @@ button or looking at the ./data/sound/music.wav file
 - The Map is used to store the various assignmentsPanel associated to each course
 
 ## Phase 4: Task 3
-- Example 1
-- Example 2
+Problems:
+- (Coupling) AssignmentsPanel and CoursesPanel both have the same createCourse method - repetitive.
+- (Coupling) AssignmentsPanel and CoursesPanel both share implementation
+detail for the method that adds components to the main JPanel (i.e. initializeUIPane) - repetitive.
+
+Solution:
+- Created a PanelStyler class to store methods for the above

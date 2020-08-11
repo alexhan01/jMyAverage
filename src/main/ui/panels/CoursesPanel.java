@@ -11,7 +11,7 @@ import java.util.*;
 
 // Source: inspired/modified from ListDemo and SpaceInvaders
 // Represents JPanel that allows user interaction with courses
-public class CoursesPanel extends JPanel implements ActionListener, ListSelectionListener {
+public class CoursesPanel extends PanelStyler implements ActionListener, ListSelectionListener {
     private static final String COURSES_FOLDER = "./data/";
     public ArrayList<Course> courses;
     private Course selectedCourse;
@@ -71,7 +71,17 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         createCourseButton = createButton(CREATE_COURSE);
 
         // Adding Components to coursesUIPane
-        initializeCoursesUIPane();
+        coursesUIPane = new JPanel();
+        initializeUIPane(
+                coursesUIPane,
+                new Component[]{
+                        averageLabel,
+                        courseAverage,
+                        nameLabel,
+                        courseNameField,
+                        createCourseButton,
+                        deleteCourseButton
+                });
     }
 
     // MODIFIES: this
@@ -88,27 +98,6 @@ public class CoursesPanel extends JPanel implements ActionListener, ListSelectio
         coursesList.setVisibleRowCount(7);
         coursesList.addListSelectionListener(this);
         coursesListScrollPane = new JScrollPane(coursesList);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes coursesUIPane
-    private void initializeCoursesUIPane() {
-        coursesUIPane = new JPanel();
-        coursesUIPane.setLayout(new BoxLayout(coursesUIPane, BoxLayout.Y_AXIS));
-        coursesUIPane.add(averageLabel);
-        coursesUIPane.add(courseAverage);
-        coursesUIPane.add(nameLabel);
-        coursesUIPane.add(courseNameField);
-        coursesUIPane.add(createCourseButton);
-        coursesUIPane.add(deleteCourseButton);
-    }
-
-    // EFFECTS: creates button based on given string
-    private JButton createButton(String str) {
-        JButton button = new JButton(str);
-        button.setActionCommand(str);
-        button.addActionListener(this);
-        return button;
     }
 
     @Override

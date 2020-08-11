@@ -10,7 +10,7 @@ import java.util.*;
 
 // Source: inspired/modified from ListDemo and SpaceInvaders
 // Represents JPanel that allows user interaction with assignments
-public class AssignmentsPanel extends JPanel implements ListSelectionListener, ActionListener {
+public class AssignmentsPanel extends PanelStyler implements ListSelectionListener, ActionListener {
     private Course selectedCourse;
     private JPanel assignmentsUIPane;
     private JPanel labelPane;
@@ -73,7 +73,15 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
         initializeFieldPane();
 
         // Adding components to assignmentsUIPane
-        initializeAssignmentsUIPane();
+        assignmentsUIPane = new JPanel();
+        initializeUIPane(
+                assignmentsUIPane,
+                new Component[]{
+                        labelPane,
+                        fieldPane,
+                        deleteAssignmentButton,
+                        createAssignmentButton
+                });
     }
 
     // MODIFIES: this
@@ -132,25 +140,6 @@ public class AssignmentsPanel extends JPanel implements ListSelectionListener, A
         fieldPane.add(nameField);
         fieldPane.add(gradeField);
         fieldPane.add(weightField);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes
-    private void initializeAssignmentsUIPane() {
-        assignmentsUIPane = new JPanel();
-        assignmentsUIPane.setLayout(new BoxLayout(assignmentsUIPane, 1));
-        assignmentsUIPane.add(labelPane);
-        assignmentsUIPane.add(fieldPane);
-        assignmentsUIPane.add(deleteAssignmentButton);
-        assignmentsUIPane.add(createAssignmentButton);
-    }
-
-    // template for creating buttons for courses panel
-    private JButton createButton(String str) {
-        JButton button = new JButton(str);
-        button.setActionCommand(str);
-        button.addActionListener(this);
-        return button;
     }
 
     @Override
