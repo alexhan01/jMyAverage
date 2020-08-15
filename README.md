@@ -71,4 +71,4 @@ is repetitive
 
 Solution:
 - Created a PanelStyler class to store methods for the above and reduce repetition
-and eliminate problematic coupling
+and eliminate problematic coupling.
